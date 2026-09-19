@@ -1,0 +1,14 @@
+id: alpine
+name: "Alpine Linux"
+family: "Independent"
+status: "active"
+links:
+  website: "https://alpinelinux.org"
+  downloads: "https://alpinelinux.org/downloads/"
+  documentation: "https://docs.alpinelinux.org"
+  mirrors: "https://mirrors.alpinelinux.org"
+verification:
+  signatures_url: "https://alpinelinux.org/downloads/"
+metadata:
+  package_manager: "apk"
+  architectures: ["x86_64", "aarch64"]

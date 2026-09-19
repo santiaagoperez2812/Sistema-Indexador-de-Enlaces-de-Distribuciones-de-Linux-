@@ -1,0 +1,14 @@
+id: void
+name: "Void Linux"
+family: "Independent"
+status: "active"
+links:
+  website: "https://voidlinux.org"
+  downloads: "https://voidlinux.org/download/"
+  documentation: "https://docs.voidlinux.org"
+  mirrors: "https://docs.voidlinux.org/xbps/repositories/mirrors/index.html"
+verification:
+  signatures_url: "https://voidlinux.org/download/"
+metadata:
+  package_manager: "xbps"
+  architectures: ["x86_64", "aarch64"]

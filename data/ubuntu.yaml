@@ -1,0 +1,14 @@
+id: ubuntu
+name: "Ubuntu"
+family: "Debian"
+status: "active"
+links:
+  website: "https://ubuntu.com"
+  downloads: "https://ubuntu.com/download"
+  documentation: "https://help.ubuntu.com"
+  mirrors: "https://launchpad.net/ubuntu/+archivemirrors"
+verification:
+  signatures_url: "https://ubuntu.com/tutorials/how-to-verify-ubuntu"
+metadata:
+  package_manager: "apt"
+  architectures: ["x86_64", "aarch64"]

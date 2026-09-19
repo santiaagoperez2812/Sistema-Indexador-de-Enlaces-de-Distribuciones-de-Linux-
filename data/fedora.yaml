@@ -1,0 +1,14 @@
+id: fedora
+name: "Fedora"
+family: "Red Hat"
+status: "active"
+links:
+  website: "https://fedoraproject.org"
+  downloads: "https://fedoraproject.org/workstation/download"
+  documentation: "https://docs.fedoraproject.org"
+  mirrors: "https://mirrormanager.fedoraproject.org"
+verification:
+  signatures_url: "https://fedoraproject.org/security"
+metadata:
+  package_manager: "dnf"
+  architectures: ["x86_64", "aarch64"]

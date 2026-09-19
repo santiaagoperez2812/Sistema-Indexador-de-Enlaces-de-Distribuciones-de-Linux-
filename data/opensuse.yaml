@@ -1,0 +1,14 @@
+id: opensuse
+name: "openSUSE"
+family: "SUSE"
+status: "active"
+links:
+  website: "https://www.opensuse.org"
+  downloads: "https://get.opensuse.org"
+  documentation: "https://doc.opensuse.org"
+  mirrors: "https://mirrors.opensuse.org"
+verification:
+  signatures_url: "https://en.opensuse.org/SDB:Download_help#Checksums_and_Signatures"
+metadata:
+  package_manager: "zypper"
+  architectures: ["x86_64", "aarch64"]

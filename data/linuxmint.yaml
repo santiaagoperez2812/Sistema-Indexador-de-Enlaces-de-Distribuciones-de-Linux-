@@ -1,0 +1,14 @@
+id: linuxmint
+name: "Linux Mint"
+family: "Debian"
+status: "active"
+links:
+  website: "https://linuxmint.com"
+  downloads: "https://linuxmint.com/download.php"
+  documentation: "https://linuxmint.com/documentation.php"
+  mirrors: "https://linuxmint.com/mirrors.php"
+verification:
+  signatures_url: "https://linuxmint.com/verify.php"
+metadata:
+  package_manager: "apt"
+  architectures: ["x86_64"]

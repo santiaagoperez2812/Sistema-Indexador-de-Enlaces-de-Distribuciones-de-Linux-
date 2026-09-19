@@ -1,0 +1,14 @@
+id: debian
+name: "Debian"
+family: "Debian"
+status: "active"
+links:
+  website: "https://www.debian.org"
+  downloads: "https://www.debian.org/distrib/"
+  documentation: "https://www.debian.org/doc/"
+  mirrors: "https://www.debian.org/mirror/list"
+verification:
+  signatures_url: "https://www.debian.org/CD/verify"
+metadata:
+  package_manager: "apt"
+  architectures: ["x86_64", "aarch64"]

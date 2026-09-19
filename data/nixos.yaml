@@ -1,0 +1,14 @@
+id: nixos
+name: "NixOS"
+family: "Independent"
+status: "active"
+links:
+  website: "https://nixos.org"
+  downloads: "https://nixos.org/download.html"
+  documentation: "https://nixos.org/learn.html"
+  mirrors: "https://cache.nixos.org"
+verification:
+  signatures_url: "https://nixos.org/download.html"
+metadata:
+  package_manager: "nix"
+  architectures: ["x86_64", "aarch64"]

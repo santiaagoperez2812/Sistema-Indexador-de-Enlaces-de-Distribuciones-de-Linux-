@@ -1,0 +1,14 @@
+id: gentoo
+name: "Gentoo"
+family: "Gentoo"
+status: "active"
+links:
+  website: "https://www.gentoo.org"
+  downloads: "https://www.gentoo.org/downloads/"
+  documentation: "https://wiki.gentoo.org"
+  mirrors: "https://www.gentoo.org/downloads/mirrors/"
+verification:
+  signatures_url: "https://www.gentoo.org/downloads/signatures/"
+metadata:
+  package_manager: "portage"
+  architectures: ["x86_64", "aarch64"]

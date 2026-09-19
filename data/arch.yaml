@@ -1,0 +1,14 @@
+id: arch
+name: "Arch Linux"
+family: "Independent"
+status: "active"
+links:
+  website: "https://archlinux.org"
+  downloads: "https://archlinux.org/download/"
+  documentation: "https://wiki.archlinux.org"
+  mirrors: "https://archlinux.org/mirrorlist/"
+verification:
+  signatures_url: "https://archlinux.org/download/"
+metadata:
+  package_manager: "pacman"
+  architectures: ["x86_64"]
