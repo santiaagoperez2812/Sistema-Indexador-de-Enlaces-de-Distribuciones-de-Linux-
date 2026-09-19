@@ -20,7 +20,8 @@ jobs:
       - name: Instalar y compilar Astro
         uses: withastro/action@v3
         with:
-          path: ./web # Le indica a la acción que Astro está en esta carpeta
+          path: ./web
+          node-version: 22 # Obligamos al servidor a usar la versión compatible con tu proyecto
 
   deploy:
     needs: build
