@@ -2,6 +2,8 @@ id: debian
 name: "Debian"
 family: "Debian"
 status: "active"
+description: "Proyecto comunitario famoso por su extrema estabilidad, filosofía de software libre puro y por ser la arquitectura base de muchas otras distribuciones."
+logo: "/logos/debian.svg"
 links:
   website: "https://www.debian.org"
   downloads: "https://www.debian.org/distrib/"

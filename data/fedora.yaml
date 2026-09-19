@@ -2,6 +2,8 @@ id: fedora
 name: "Fedora"
 family: "Red Hat"
 status: "active"
+description: "Entorno patrocinado por Red Hat que integra las tecnologías de código abierto más recientes y vanguardistas para desarrolladores."
+logo: "/logos/fedora.svg"
 links:
   website: "https://fedoraproject.org"
   downloads: "https://fedoraproject.org/workstation/download"

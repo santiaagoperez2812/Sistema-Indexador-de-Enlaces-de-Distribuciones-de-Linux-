@@ -2,6 +2,8 @@ id: linuxmint
 name: "Linux Mint"
 family: "Debian"
 status: "active"
+description: "Sistema altamente accesible e ideal para principiantes, con una interfaz clásica y amigable que facilita la transición desde Windows."
+logo: "/logos/linuxmint.svg"
 links:
   website: "https://linuxmint.com"
   downloads: "https://linuxmint.com/download.php"

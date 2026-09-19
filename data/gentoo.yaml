@@ -2,6 +2,8 @@ id: gentoo
 name: "Gentoo"
 family: "Gentoo"
 status: "active"
+description: "Sistema operativo avanzado donde el usuario compila el código fuente del software localmente para optimizar el rendimiento al máximo."
+logo: "/logos/gentoo.svg"
 links:
   website: "https://www.gentoo.org"
   downloads: "https://www.gentoo.org/downloads/"

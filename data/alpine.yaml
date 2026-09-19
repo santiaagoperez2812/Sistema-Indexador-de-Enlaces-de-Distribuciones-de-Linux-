@@ -2,6 +2,8 @@ id: alpine
 name: "Alpine Linux"
 family: "Independent"
 status: "active"
+description: "Distribución minimalista y enfocada en la seguridad, ampliamente utilizada en entornos de contenedores por su peso ultraligero."
+logo: "/logos/alpine.svg"
 links:
   website: "https://alpinelinux.org"
   downloads: "https://alpinelinux.org/downloads/"

@@ -2,6 +2,8 @@ id: ubuntu
 name: "Ubuntu"
 family: "Debian"
 status: "active"
+description: "Una de las distribuciones más populares a nivel mundial, priorizando la facilidad de uso de escritorio, la amplia compatibilidad de hardware y un soporte extendido sólido."
+logo: "/logos/ubuntu.svg"
 links:
   website: "https://ubuntu.com"
   downloads: "https://ubuntu.com/download"

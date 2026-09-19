@@ -2,6 +2,8 @@ id: void
 name: "Void Linux"
 family: "Independent"
 status: "active"
+description: "Distribución independiente, estable y muy ligera que se distingue principalmente por utilizar el gestor de servicios runit en lugar del omnipresente systemd."
+logo: "/logos/void.svg"
 links:
   website: "https://voidlinux.org"
   downloads: "https://voidlinux.org/download/"

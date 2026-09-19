@@ -2,6 +2,8 @@ id: opensuse
 name: "openSUSE"
 family: "SUSE"
 status: "active"
+description: "Distribución versátil impulsada por la potente herramienta de administración de sistemas YaST, orientada tanto a desarrolladores como a administradores."
+logo: "/logos/opensuse.svg"
 links:
   website: "https://www.opensuse.org"
   downloads: "https://get.opensuse.org"

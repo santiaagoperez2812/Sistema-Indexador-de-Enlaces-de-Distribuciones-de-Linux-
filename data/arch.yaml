@@ -2,6 +2,8 @@ id: arch
 name: "Arch Linux"
 family: "Independent"
 status: "active"
+description: "Sistema de actualización continua (rolling release) para usuarios avanzados que prefieren construir su entorno desde cero mediante línea de comandos."
+logo: "/logos/arch.svg"
 links:
   website: "https://archlinux.org"
   downloads: "https://archlinux.org/download/"

@@ -2,6 +2,8 @@ id: nixos
 name: "NixOS"
 family: "Independent"
 status: "active"
+description: "Sistema declarativo basado en el gestor de paquetes Nix, destacando por permitir actualizaciones atómicas y configuraciones del sistema totalmente reproducibles."
+logo: "/logos/nixos.svg"
 links:
   website: "https://nixos.org"
   downloads: "https://nixos.org/download.html"
