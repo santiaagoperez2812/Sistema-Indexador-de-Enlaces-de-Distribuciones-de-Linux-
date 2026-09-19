@@ -1,0 +1,230 @@
+---
+import fs from 'node:fs';
+import path from 'node:path';
+import * as yaml from 'js-yaml';
+
+const dataDir = path.resolve('../data');
+const files = fs.readdirSync(dataDir).filter(file => file.endsWith('.yaml'));
+
+const distros = files.map(file => {
+  const content = fs.readFileSync(path.join(dataDir, file), 'utf8');
+  return yaml.load(content);
+});
+---
+
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Linux Distro Index</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --bg-color: #0b0f19;
+        --card-bg: rgba(30, 41, 59, 0.4);
+        --card-border: rgba(255, 255, 255, 0.1);
+        --text-main: #f1f5f9;
+        --text-muted: #94a3b8;
+        --accent: #38bdf8;
+        --accent-glow: rgba(56, 189, 248, 0.4);
+        --tag-bg: rgba(56, 189, 248, 0.15);
+      }
+
+      * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+      
+      body {
+        background-color: var(--bg-color);
+        background-image: radial-gradient(circle at 50% 0%, #1e293b 0%, transparent 70%);
+        color: var(--text-main);
+        min-height: 100vh;
+        padding: 3rem 1.5rem;
+      }
+
+      .container { max-width: 1200px; margin: 0 auto; }
+
+      header { text-align: center; margin-bottom: 3.5rem; }
+      header h1 { font-size: 3rem; font-weight: 700; letter-spacing: -1px; margin-bottom: 0.5rem; }
+      header p { color: var(--text-muted); font-size: 1.15rem; max-width: 600px; margin: 0 auto; }
+
+      .search-container { max-width: 650px; margin: 0 auto 3.5rem auto; position: relative; }
+      .search-container input {
+        width: 100%;
+        padding: 1rem 1.5rem;
+        border-radius: 12px;
+        border: 1px solid var(--card-border);
+        background: rgba(15, 23, 42, 0.6);
+        backdrop-filter: blur(10px);
+        color: white;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        outline: none;
+      }
+      .search-container input:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 20px var(--accent-glow);
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+        gap: 2rem;
+      }
+
+      .card {
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        border-radius: 16px;
+        padding: 1.8rem;
+        backdrop-filter: blur(12px);
+        transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        display: flex;
+        flex-direction: column;
+      }
+      
+      .card:hover {
+        transform: translateY(-5px);
+        border-color: rgba(56, 189, 248, 0.5);
+        box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5), 0 0 15px var(--accent-glow);
+      }
+
+      .card-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+      
+      /* Logo actualizado con fondo claro para máximo contraste */
+      .card-logo {
+        width: 54px;
+        height: 54px;
+        object-fit: contain;
+        background: #f8fafc;
+        padding: 8px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+        border: 2px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .card-title-group h2 { font-size: 1.4rem; font-weight: 600; }
+      .card-title-group span { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+
+      .card-desc {
+        color: var(--text-muted);
+        font-size: 0.95rem;
+        line-height: 1.5;
+        margin-bottom: 1.2rem;
+        flex-grow: 1;
+      }
+
+      .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; }
+      .tag {
+        background: var(--tag-bg);
+        color: var(--accent);
+        font-size: 0.75rem;
+        padding: 0.3rem 0.6rem;
+        border-radius: 6px;
+        font-weight: 500;
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        border-top: 1px solid var(--card-border);
+        padding-top: 1.2rem;
+      }
+      .btn {
+        text-decoration: none;
+        font-size: 0.85rem;
+        padding: 0.5rem 0.8rem;
+        border-radius: 8px;
+        background: rgba(255,255,255,0.05);
+        color: var(--text-main);
+        transition: background 0.2s;
+        border: 1px solid transparent;
+      }
+      .btn:hover { background: rgba(255,255,255,0.1); }
+      .btn-primary { border-color: rgba(52, 211, 153, 0.4); color: #34d399; }
+      .btn-primary:hover { background: rgba(52, 211, 153, 0.1); }
+      
+      .btn-reviews { width: 100%; text-align: center; margin-top: 0.5rem; border: 1px dashed var(--card-border); }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Linux Distro Index</h1>
+        <p>Directorio centralizado y auditado de enlaces oficiales del ecosistema Linux.</p>
+      </header>
+
+      <div class="search-container">
+        <input 
+          type="text" 
+          id="search" 
+          placeholder="Buscar distribución, familia o gestor de paquetes..." 
+        />
+      </div>
+
+      <div class="grid" id="distro-grid">
+        {distros.map(distro => (
+          <div 
+            class="card distro-card" 
+            data-search={`${distro.name} ${distro.family} ${distro.metadata?.package_manager || ''} ${(distro.metadata?.tags || []).join(' ')}`.toLowerCase()}
+          >
+            <div class="card-header">
+              {distro.logo ? (
+                <img src={distro.logo} alt={`Logo de ${distro.name}`} class="card-logo" onerror="this.style.display='none'" />
+              ) : (
+                <div class="card-logo" style="display:flex;align-items:center;justify-content:center;font-size:1.5rem;">🐧</div>
+              )}
+              <div class="card-title-group">
+                <h2>{distro.name}</h2>
+                <span>{distro.family}</span>
+              </div>
+            </div>
+            
+            <p class="card-desc">{distro.description || 'Sin descripción disponible.'}</p>
+            
+            {distro.metadata?.tags && (
+              <div class="tags">
+                {distro.metadata.tags.map((tag: unknown) => <span class="tag">{String(tag)}</span>)}
+              </div>
+            )}
+
+            <div class="actions">
+              {distro.links?.website && <a href={distro.links.website} target="_blank" rel="noopener" class="btn">Sitio Web</a>}
+              {distro.links?.downloads && <a href={distro.links.downloads} target="_blank" rel="noopener" class="btn">ISO</a>}
+              {distro.links?.documentation && <a href={distro.links.documentation} target="_blank" rel="noopener" class="btn">Wiki</a>}
+              {distro.verification?.signatures_url && (
+                <a href={distro.verification.signatures_url} target="_blank" rel="noopener" class="btn btn-primary">Verificar GPG</a>
+              )}
+              
+              <!-- Botón preparado para la futura vista de reseñas/comentarios -->
+              <a href={`/distro/${distro.id}`} class="btn btn-reviews">Ver Reseñas / Comentar</a>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <script>
+      const searchInput = document.getElementById('search');
+      const cards = document.querySelectorAll('.distro-card');
+
+      searchInput?.addEventListener('input', (e) => {
+        const query = (e.target as HTMLInputElement).value.toLowerCase().trim();
+        cards.forEach((card) => {
+          const matchData = card.getAttribute('data-search') || '';
+          if (matchData.includes(query)) {
+            (card as HTMLElement).style.display = 'flex';
+          } else {
+            (card as HTMLElement).style.display = 'none';
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
