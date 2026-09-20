@@ -1,17 +1,11 @@
 ---
-import fs from 'node:fs';
-import path from 'node:path';
-import * as yaml from 'js-yaml';
+import Layout from '../layouts/Layout.astro';
+// Hacemos la petición HTTP a tu API en PythonAnywhere en lugar de leer archivos locales
+const response = await fetch('https://santiagoperez.pythonanywhere.com/api/distros');
+const distros = await response.json();
 
-const dataDir = path.resolve('../data');
-const files = fs.readdirSync(dataDir).filter(file => file.endsWith('.yaml'));
-
-const distros = files.map(file => {
-  const content = fs.readFileSync(path.join(dataDir, file), 'utf8');
-  return yaml.load(content);
-});
-
-const families = [...new Set(distros.map(d => d.family))].sort();
+// Extraemos las familias únicas para los botones de filtro
+const families = [...new Set(distros.map((d: any) => d.family))].sort();
 ---
 
 <!DOCTYPE html>
@@ -189,14 +183,13 @@ const families = [...new Set(distros.map(d => d.family))].sort();
 
       <div class="filter-container" style="display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap; margin-bottom: 3rem;">
         <button class="filter-btn active" data-family="all">Todas</button>
-        {families.map(family => (
+        {families.map((family: any) => (
           <button class="filter-btn" data-family={family}>{family}</button>
         ))}
       </div>
 
       <div class="grid" id="distro-grid">
-        {distros.map(distro => (
-          <div 
+        {distros.map((distro: any) => (
           <div 
             class="card distro-card" 
             data-search={`${distro.name} ${distro.family} ${distro.metadata?.package_manager || ''} ${(distro.metadata?.tags || []).join(' ')}`.toLowerCase()}
@@ -204,7 +197,7 @@ const families = [...new Set(distros.map(d => d.family))].sort();
           >
             <div class="card-header">
               {distro.logo ? (
-                <img src={`${import.meta.env.BASE_URL}${distro.logo.replace(/^\//, '')}`} alt={`Logo de ${distro.name}`} class="card-logo" />
+                <img src={distro.logo.startsWith('http') ? distro.logo : `${import.meta.env.BASE_URL}${distro.logo.replace(/^\//, '')}`} alt={`Logo de ${distro.name}`} class="card-logo" />
               ) : (
                 <div class="card-logo" style="display:flex;align-items:center;justify-content:center;font-size:1.5rem;">🐧</div>
               )}
@@ -216,7 +209,7 @@ const families = [...new Set(distros.map(d => d.family))].sort();
             
             <p class="card-desc">{distro.description || 'Sin descripción disponible.'}</p>
             
-            {distro.metadata?.tags && (
+            {distro.metadata?.tags && distro.metadata.tags.length > 0 && (
               <div class="tags">
                 {distro.metadata.tags.map((tag: unknown) => <span class="tag">{String(tag)}</span>)}
               </div>
@@ -258,16 +251,13 @@ const families = [...new Set(distros.map(d => d.family))].sort();
         });
       }
 
-      // Evento para el buscador
       searchInput?.addEventListener('input', (e) => {
         currentQuery = (e.target as HTMLInputElement).value.toLowerCase().trim();
         filterCards();
       });
 
-      // Eventos para los botones de filtro
       filterBtns.forEach(btn => {
         btn.addEventListener('click', (e) => {
-          // Quitar clase active de todos y ponerla al clickeado
           filterBtns.forEach(b => b.classList.remove('active'));
           const target = e.target as HTMLElement;
           target.classList.add('active');

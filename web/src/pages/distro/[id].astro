@@ -1,24 +1,20 @@
 ---
-import fs from 'node:fs';
-import path from 'node:path';
-import * as yaml from 'js-yaml';
-
+import Layout from '../../layouts/Layout.astro';
 // Astro requiere esta función para generar las URLs dinámicas durante la compilación
 export async function getStaticPaths() {
-  const dataDir = path.resolve('../data');
-  const files = fs.readdirSync(dataDir).filter(file => file.endsWith('.yaml'));
+  const response = await fetch('https://santiagoperez.pythonanywhere.com/api/distros');
+  const distros = await response.json();
   
-  return files.map(file => {
-    const content = fs.readFileSync(path.join(dataDir, file), 'utf8');
-    const distro = yaml.load(content);
-    return {
-      params: { id: distro.id }, // Define que la URL será /distro/arch, /distro/ubuntu, etc.
-      props: { distro },         // Pasa los datos a la página
-    };
-  });
+  return distros.map((distro: any) => ({
+    params: { id: distro.id }, 
+  }));
 }
 
-const { distro } = Astro.props;
+const { id } = Astro.params;
+
+// Obtenemos los detalles específicos de esta distribución desde tu base de datos SQLite remota
+const res = await fetch(`https://santiagoperez.pythonanywhere.com/api/distros/${id}`);
+const distro = await res.json();
 ---
 
 <!DOCTYPE html>
@@ -129,7 +125,7 @@ const { distro } = Astro.props;
 
       <div class="header-section">
         {distro.logo ? (
-          <img src={`${import.meta.env.BASE_URL}${distro.logo.replace(/^\//, '')}`} alt={`Logo de ${distro.name}`} class="distro-logo" onerror="this.style.display='none'" />
+          <img src={distro.logo.startsWith('http') ? distro.logo : `${import.meta.env.BASE_URL}${distro.logo.replace(/^\//, '')}`} alt={`Logo de ${distro.name}`} class="distro-logo" onerror="this.style.display='none'" />
         ) : (
           <div class="distro-logo" style="display:flex;align-items:center;justify-content:center;font-size:2.5rem;">🐧</div>
         )}
@@ -171,7 +167,6 @@ const { distro } = Astro.props;
           Inicia sesión con tu cuenta de GitHub para dejar tu opinión sobre {distro.name}.
         </p>
         
-        <!-- REEMPLAZA ESTOS DATOS CON LOS QUE OBTUVISTE EN GISCUS.APP -->
         <script src="https://giscus.app/client.js"
             data-repo="santiaagoperez2812/Sistema-Indexador-de-Enlaces-de-Distribuciones-de-Linux-"
             data-repo-id="R_kgDOUfkcxA"
