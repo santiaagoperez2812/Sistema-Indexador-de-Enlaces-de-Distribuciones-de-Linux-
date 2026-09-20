@@ -25,7 +25,7 @@ const { distro } = Astro.props;
 <html lang="es">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{distro.name} - Linux Distro Index</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -124,12 +124,12 @@ const { distro } = Astro.props;
   <body>
     <div class="container">
       <div class="nav-bar">
-        <a href="/">&larr; Volver al Directorio</a>
+        <a href={import.meta.env.BASE_URL}>&larr; Volver al Directorio</a>
       </div>
 
       <div class="header-section">
         {distro.logo ? (
-          <img src={distro.logo} alt={`Logo de ${distro.name}`} class="distro-logo" onerror="this.style.display='none'" />
+          <img src={`${import.meta.env.BASE_URL}${distro.logo.replace(/^\//, '')}`} alt={`Logo de ${distro.name}`} class="distro-logo" onerror="this.style.display='none'" />
         ) : (
           <div class="distro-logo" style="display:flex;align-items:center;justify-content:center;font-size:2.5rem;">🐧</div>
         )}

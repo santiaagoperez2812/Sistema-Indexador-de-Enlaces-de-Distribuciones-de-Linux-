@@ -16,7 +16,7 @@ const distros = files.map(file => {
 <html lang="es">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Linux Distro Index</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -96,7 +96,6 @@ const distros = files.map(file => {
         margin-bottom: 1rem;
       }
       
-      /* Logo actualizado con fondo claro para máximo contraste */
       .card-logo {
         width: 54px;
         height: 54px;
@@ -176,7 +175,7 @@ const distros = files.map(file => {
           >
             <div class="card-header">
               {distro.logo ? (
-                <img src={distro.logo} alt={`Logo de ${distro.name}`} class="card-logo" onerror="this.style.display='none'" />
+                <img src={`${import.meta.env.BASE_URL}${distro.logo.replace(/^\//, '')}`} alt={`Logo de ${distro.name}`} class="card-logo" />
               ) : (
                 <div class="card-logo" style="display:flex;align-items:center;justify-content:center;font-size:1.5rem;">🐧</div>
               )}
@@ -202,8 +201,7 @@ const distros = files.map(file => {
                 <a href={distro.verification.signatures_url} target="_blank" rel="noopener" class="btn btn-primary">Verificar GPG</a>
               )}
               
-              <!-- Botón preparado para la futura vista de reseñas/comentarios -->
-              <a href={`/distro/${distro.id}`} class="btn btn-reviews">Ver Reseñas / Comentar</a>
+              <a href={`${import.meta.env.BASE_URL}distro/${distro.id}`} class="btn btn-reviews">Ver Reseñas / Comentar</a>
             </div>
           </div>
         ))}
