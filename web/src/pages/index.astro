@@ -10,6 +10,8 @@ const distros = files.map(file => {
   const content = fs.readFileSync(path.join(dataDir, file), 'utf8');
   return yaml.load(content);
 });
+
+const families = [...new Set(distros.map(d => d.family))].sort();
 ---
 
 <!DOCTYPE html>
@@ -150,6 +152,24 @@ const distros = files.map(file => {
       .btn-primary:hover { background: rgba(52, 211, 153, 0.1); }
       
       .btn-reviews { width: 100%; text-align: center; margin-top: 0.5rem; border: 1px dashed var(--card-border); }
+
+      .filter-btn {
+        background: rgba(15, 23, 42, 0.6);
+        border: 1px solid var(--card-border);
+        color: var(--text-muted);
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: 500;
+      }
+      .filter-btn:hover { background: rgba(255, 255, 255, 0.1); color: var(--text-main); }
+      .filter-btn.active {
+        background: rgba(56, 189, 248, 0.2);
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+
     </style>
   </head>
   <body>
@@ -167,11 +187,20 @@ const distros = files.map(file => {
         />
       </div>
 
+      <div class="filter-container" style="display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap; margin-bottom: 3rem;">
+        <button class="filter-btn active" data-family="all">Todas</button>
+        {families.map(family => (
+          <button class="filter-btn" data-family={family}>{family}</button>
+        ))}
+      </div>
+
       <div class="grid" id="distro-grid">
         {distros.map(distro => (
           <div 
+          <div 
             class="card distro-card" 
             data-search={`${distro.name} ${distro.family} ${distro.metadata?.package_manager || ''} ${(distro.metadata?.tags || []).join(' ')}`.toLowerCase()}
+            data-family={distro.family}
           >
             <div class="card-header">
               {distro.logo ? (
@@ -210,17 +239,41 @@ const distros = files.map(file => {
 
     <script>
       const searchInput = document.getElementById('search');
+      const filterBtns = document.querySelectorAll('.filter-btn');
       const cards = document.querySelectorAll('.distro-card');
+      
+      let currentQuery = '';
+      let currentFamily = 'all';
 
-      searchInput?.addEventListener('input', (e) => {
-        const query = (e.target as HTMLInputElement).value.toLowerCase().trim();
+      function filterCards() {
         cards.forEach((card) => {
-          const matchData = card.getAttribute('data-search') || '';
-          if (matchData.includes(query)) {
+          const matchText = (card.getAttribute('data-search') || '').includes(currentQuery);
+          const matchFamily = currentFamily === 'all' || card.getAttribute('data-family') === currentFamily;
+          
+          if (matchText && matchFamily) {
             (card as HTMLElement).style.display = 'flex';
           } else {
             (card as HTMLElement).style.display = 'none';
           }
+        });
+      }
+
+      // Evento para el buscador
+      searchInput?.addEventListener('input', (e) => {
+        currentQuery = (e.target as HTMLInputElement).value.toLowerCase().trim();
+        filterCards();
+      });
+
+      // Eventos para los botones de filtro
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          // Quitar clase active de todos y ponerla al clickeado
+          filterBtns.forEach(b => b.classList.remove('active'));
+          const target = e.target as HTMLElement;
+          target.classList.add('active');
+          
+          currentFamily = target.getAttribute('data-family') || 'all';
+          filterCards();
         });
       });
     </script>
