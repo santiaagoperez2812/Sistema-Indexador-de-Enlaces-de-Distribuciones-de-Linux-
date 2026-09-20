@@ -1,0 +1,63 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Historia de Linux - Linux Distro Index">
+  <style>
+    .timeline-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .header-title { text-align: center; margin-bottom: 3rem; }
+    .header-title h1 { font-size: 2.8rem; margin-bottom: 1rem; }
+    .header-title p { color: var(--text-muted); font-size: 1.1rem; }
+    
+    .timeline-item {
+      background: rgba(15, 23, 42, 0.6);
+      border-left: 4px solid var(--accent);
+      border-radius: 0 12px 12px 0;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      border-top: 1px solid var(--card-border);
+      border-right: 1px solid var(--card-border);
+      border-bottom: 1px solid var(--card-border);
+    }
+    .timeline-date { color: var(--accent); font-weight: 700; font-size: 1.2rem; margin-bottom: 0.5rem; }
+    .timeline-title { font-size: 1.5rem; margin-bottom: 1rem; color: var(--text-main); }
+    .timeline-text { color: var(--text-muted); line-height: 1.6; }
+  </style>
+
+  <div class="timeline-container">
+    <div class="header-title">
+      <h1>La Evolución de las Distros</h1>
+      <p>Un breve recorrido por la historia de los sistemas operativos GNU/Linux.</p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-date">1991</div>
+      <div class="timeline-title">El Kernel de Linus Torvalds</div>
+      <div class="timeline-text">
+        Linus Torvalds anuncia en usenet un proyecto de aficionado: un núcleo de sistema operativo libre. 
+        Al combinarse con las herramientas del proyecto GNU (iniciado por Richard Stallman en 1983), nace GNU/Linux.
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-date">1993</div>
+      <div class="timeline-title">Nacen los Gigantes: Debian y Slackware</div>
+      <div class="timeline-text">
+        Slackware se convierte en la distribución comercial más antigua aún en mantenimiento. Ese mismo año, 
+        Ian Murdock funda Debian, estableciendo un modelo de desarrollo impulsado por la comunidad y el formato de paquetes .deb, sentando las bases para cientos de distribuciones futuras.
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-date">2002 - 2004</div>
+      <div class="timeline-title">Arch Linux y Ubuntu</div>
+      <div class="timeline-text">
+        En 2002 surge Arch Linux, enfocado en el principio KISS (Keep It Simple, Stupid) y un modelo de actualización continua (Rolling Release). 
+        En 2004, Canonical lanza Ubuntu, basada en Debian, con el objetivo de hacer Linux accesible para el usuario común en el escritorio ("Linux for Human Beings").
+      </div>
+    </div>
+  </div>
+</Layout>

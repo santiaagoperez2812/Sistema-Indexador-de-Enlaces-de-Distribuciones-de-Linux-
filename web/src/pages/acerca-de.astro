@@ -1,0 +1,47 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Acerca del Proyecto - Linux Distro Index">
+  <style>
+    .content-wrapper {
+      max-width: 800px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 3rem;
+      backdrop-filter: blur(12px);
+    }
+    h1 { font-size: 2.5rem; margin-bottom: 1.5rem; color: var(--text-main); }
+    h2 { font-size: 1.5rem; margin-top: 2rem; margin-bottom: 1rem; color: var(--accent); }
+    p { color: var(--text-muted); line-height: 1.7; margin-bottom: 1.2rem; font-size: 1.05rem; }
+    ul { color: var(--text-muted); margin-left: 1.5rem; margin-bottom: 1.5rem; line-height: 1.7; }
+    li { margin-bottom: 0.5rem; }
+  </style>
+
+  <div class="content-wrapper">
+    <h1>Acerca del Indexador</h1>
+    
+    <p>
+      <strong>Linux Distro Index</strong> nació como una iniciativa para centralizar y auditar los recursos del ecosistema Linux. 
+      Con la proliferación de sitios web no oficiales y enlaces caídos, este proyecto busca ofrecer un punto de acceso 
+      seguro, rápido y confiable a las distribuciones más importantes.
+    </p>
+
+    <h2>Arquitectura del Proyecto</h2>
+    <p>Este sistema está construido utilizando una arquitectura moderna y desacoplada (Full Stack):</p>
+    <ul>
+      <li><strong>Frontend:</strong> Desarrollado con Astro y desplegado en GitHub Pages, ofreciendo una experiencia rápida, estática y reactiva con filtrado en tiempo real.</li>
+      <li><strong>Backend & API:</strong> Alimentado por una API REST construida en Python (Flask) y alojada en la nube, sirviendo los datos en formato JSON.</li>
+      <li><strong>Base de Datos:</strong> Sistema relacional basado en SQLite que gestiona distribuciones, enlaces de espejos (mirrors) y metadatos técnicos.</li>
+      <li><strong>Automatización:</strong> Scripts de auditoría de red que verifican periódicamente el estado (Health Checks) de los servidores oficiales y las firmas GPG.</li>
+    </ul>
+
+    <h2>Objetivo</h2>
+    <p>
+      Proveer a administradores de sistemas, estudiantes y entusiastas del software libre una herramienta de consulta rápida 
+      que elimine la fricción al momento de buscar documentación oficial o descargas verificadas.
+    </p>
+  </div>
+</Layout>

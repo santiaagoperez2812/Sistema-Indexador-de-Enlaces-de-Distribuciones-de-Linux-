@@ -1,0 +1,79 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Blog y Guías - Linux Distro Index">
+  <style>
+    .blog-header { text-align: center; margin-bottom: 4rem; }
+    .blog-header h1 { font-size: 3rem; margin-bottom: 1rem; }
+    .blog-header p { color: var(--text-muted); font-size: 1.15rem; max-width: 600px; margin: 0 auto; }
+
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .post-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 2rem;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .post-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--accent);
+    }
+    
+    .post-date { font-size: 0.85rem; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; }
+    .post-title { font-size: 1.4rem; font-weight: 600; margin-bottom: 1rem; line-height: 1.4; }
+    .post-excerpt { color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.5rem; flex-grow: 1; }
+    
+    .read-more {
+      color: var(--text-main);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .read-more:hover { color: var(--accent); }
+  </style>
+
+  <div class="blog-header">
+    <h1>Blog & Guías</h1>
+    <p>Tutoriales, artículos técnicos y novedades sobre el ecosistema de código abierto.</p>
+  </div>
+
+  <div class="blog-grid">
+    <!-- Artículo 1 -->
+    <article class="post-card">
+      <div class="post-date">Guía Técnica</div>
+      <h2 class="post-title">¿Por qué es vital verificar las firmas GPG de tus ISOs?</h2>
+      <p class="post-excerpt">Aprende a proteger tu entorno verificando la autenticidad de las imágenes descargadas antes de instalarlas en tus servidores o equipos personales.</p>
+      <a href="#" class="read-more">Leer artículo &rarr;</a>
+    </article>
+
+    <!-- Artículo 2 -->
+    <article class="post-card">
+      <div class="post-date">Conceptos</div>
+      <h2 class="post-title">Rolling Release vs Standard Release</h2>
+      <p class="post-excerpt">Analizamos las diferencias arquitectónicas entre modelos de actualización como el de Arch Linux frente a la estabilidad de Debian.</p>
+      <a href="#" class="read-more">Leer artículo &rarr;</a>
+    </article>
+
+    <!-- Artículo 3 -->
+    <article class="post-card">
+      <div class="post-date">Próximamente</div>
+      <h2 class="post-title">Gestores de Paquetes: APT, DNF y Pacman cara a cara</h2>
+      <p class="post-excerpt">Una comparativa profunda sobre cómo las diferentes familias de Linux gestionan sus dependencias, repositorios y actualizaciones.</p>
+      <a href="#" class="read-more">Leer artículo &rarr;</a>
+    </article>
+  </div>
+</Layout>
