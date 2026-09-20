@@ -94,30 +94,12 @@ const families = [...new Set(distros.map((d: any) => d.family))].sort();
       <p>Directorio centralizado y auditado de enlaces oficiales del ecosistema Linux.</p>
     </header>
 
-    <div class="search-container" style="max-width: 800px; margin: 0 auto 3.5rem auto; display: flex; gap: 1rem; flex-wrap: wrap;">
-        <!-- Buscador de texto -->
-        <input 
-          type="text" 
-          id="search" 
-          placeholder="Buscar distribución o palabras clave..." 
-          style="flex: 1; min-width: 250px; padding: 1rem 1.5rem; border-radius: 12px; border: 1px solid var(--card-border); background: rgba(15, 23, 42, 0.6); color: white; outline: none;"
-        />
-        
-        <!-- Filtro por Gestor de Paquetes -->
-        <select id="package-filter" style="padding: 1rem; border-radius: 12px; border: 1px solid var(--card-border); background: rgba(15, 23, 42, 0.6); color: var(--text-muted); outline: none; cursor: pointer;">
-          <option value="all">Todos los gestores</option>
-          <option value="apt">APT (Debian/Ubuntu)</option>
-          <option value="pacman">Pacman (Arch)</option>
-          <option value="dnf">DNF (Red Hat/Fedora)</option>
-          <option value="zypper">Zypper (SUSE)</option>
-          <option value="apk">APK (Alpine)</option>
-          <option value="xbps">XBPS (Void)</option>
-          <option value="portage">Portage (Gentoo)</option>
-          <option value="nix">Nix (NixOS)</option>
-        </select>
-      </div>
-
-      <!-- Filtro avanzado integrado -->
+    <div class="search-container">
+      <input 
+        type="text" 
+        id="search" 
+        placeholder="Buscar distribución o palabras clave..." 
+      />
       <select id="package-filter">
         <option value="all">Todos los gestores</option>
         <option value="apt">APT (Debian/Ubuntu)</option>
@@ -180,46 +162,41 @@ const families = [...new Set(distros.map((d: any) => d.family))].sort();
   </div>
 
   <script>
-      const searchInput = document.getElementById('search');
-      const packageFilter = document.getElementById('package-filter');
-      const filterBtns = document.querySelectorAll('.filter-btn');
-      const cards = document.querySelectorAll('.distro-card');
-      
-      let currentQuery = '';
-      let currentFamily = 'all';
-      let currentPackage = 'all';
+    const searchInput = document.getElementById('search');
+    const packageFilter = document.getElementById('package-filter');
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('.distro-card');
+    
+    let currentQuery = '';
+    let currentFamily = 'all';
+    let currentPackage = 'all';
 
-      function filterCards() {
-        cards.forEach((card) => {
-          // Extraemos los datos ocultos en el HTML de la tarjeta
-          const searchData = (card.getAttribute('data-search') || '').toLowerCase();
-          const familyData = card.getAttribute('data-family') || '';
-          
-          // Comprobamos las tres condiciones
-          const matchText = searchData.includes(currentQuery);
-          const matchFamily = currentFamily === 'all' || familyData === currentFamily;
-          const matchPackage = currentPackage === 'all' || searchData.includes(currentPackage);
-          
-          // Mostrar solo si cumple las tres
-          if (matchText && matchFamily && matchPackage) {
-            card.style.display = 'flex';
-          } else {
-            card.style.display = 'none';
-          }
-        });
-      }
-
-      searchInput?.addEventListener('input', (e) => {
-        currentQuery = e.target.value.toLowerCase().trim();
-        filterCards();
+    function filterCards() {
+      cards.forEach((card) => {
+        const searchData = (card.getAttribute('data-search') || '').toLowerCase();
+        const familyData = card.getAttribute('data-family') || '';
+        
+        const matchText = searchData.includes(currentQuery);
+        const matchFamily = currentFamily === 'all' || familyData === currentFamily;
+        const matchPackage = currentPackage === 'all' || searchData.includes(currentPackage);
+        
+        if (matchText && matchFamily && matchPackage) {
+          (card as HTMLElement).style.display = 'flex';
+        } else {
+          (card as HTMLElement).style.display = 'none';
+        }
       });
+    }
 
-      packageFilter?.addEventListener('change', (e) => {
-        currentPackage = e.target.value;
-        filterCards();
-      });
+    searchInput?.addEventListener('input', (e) => {
+      currentQuery = (e.target as HTMLInputElement).value.toLowerCase().trim();
+      filterCards();
+    });
 
-   
+    packageFilter?.addEventListener('change', (e) => {
+      currentPackage = (e.target as HTMLSelectElement).value;
+      filterCards();
+    });
 
     filterBtns.forEach(btn => {
       btn.addEventListener('click', (e) => {
