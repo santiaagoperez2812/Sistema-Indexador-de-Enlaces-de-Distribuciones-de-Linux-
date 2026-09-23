@@ -1,4 +1,5 @@
 ---
+import Footer from '../components/Footer.astro';
 const { title = "Linux Distro Index" } = Astro.props;
 ---
 <!DOCTYPE html>
@@ -10,6 +11,8 @@ const { title = "Linux Distro Index" } = Astro.props;
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style is:global>
       /* Variables globales para mantener la consistencia estética */
+
+      /* Variables Globales (Modo Oscuro por defecto) */
       :root {
         --bg-color: #0b0f19;
         --card-bg: rgba(30, 41, 59, 0.4);
@@ -17,8 +20,20 @@ const { title = "Linux Distro Index" } = Astro.props;
         --text-main: #f1f5f9;
         --text-muted: #94a3b8;
         --accent: #38bdf8;
+        --nav-bg: rgba(15, 23, 42, 0.8);
       }
       
+      /* Variables Globales (Modo Claro) */
+      :root.light-theme {
+        --bg-color: #f8fafc;
+        --card-bg: rgba(255, 255, 255, 0.8);
+        --card-border: rgba(0, 0, 0, 0.1);
+        --text-main: #0f172a;
+        --text-muted: #475569;
+        --accent: #0284c7;
+        --nav-bg: rgba(255, 255, 255, 0.9);
+      }
+
       * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
       
       body {
@@ -26,11 +41,18 @@ const { title = "Linux Distro Index" } = Astro.props;
         background-image: radial-gradient(circle at 50% 0%, #1e293b 0%, transparent 70%);
         color: var(--text-main);
         min-height: 100vh;
+        transition: background-color 0.3s ease, color 0.3s ease;
       }
 
-      /* Estilos del Navbar Global */
+      /* Ajuste del fondo degradado para el modo claro */
+      :root.light-theme body {
+        background-image: radial-gradient(circle at 50% 0%, #e2e8f0 0%, transparent 70%);
+      }
+
+      /* Aseguramos que el Navbar tome la variable correcta */
       .navbar {
-        background: rgba(15, 23, 42, 0.8);
+        background: var(--nav-bg);
+        /* ... mantén el resto de tu CSS del navbar igual ... */
         backdrop-filter: blur(12px);
         border-bottom: 1px solid var(--card-border);
         padding: 1rem 2rem;
@@ -55,6 +77,25 @@ const { title = "Linux Distro Index" } = Astro.props;
       
       main { padding: 3rem 1.5rem; max-width: 1200px; margin: 0 auto; }
     </style>
+    <!-- Script inline para prevenir el parpadeo de temas -->
+    <script is:inline>
+      const theme = (() => {
+        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+          return localStorage.getItem('theme');
+        }
+        if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+          return 'light';
+        }
+        return 'dark';
+      })();
+    
+      if (theme === 'light') {
+        document.documentElement.classList.add('light-theme');
+      } else {
+        document.documentElement.classList.remove('light-theme');
+      }
+      window.localStorage.setItem('theme', theme);
+    </script>
   </head>
   <body>
     <nav class="navbar">
@@ -66,9 +107,37 @@ const { title = "Linux Distro Index" } = Astro.props;
         <a href={`${import.meta.env.BASE_URL}acerca-de`}>Acerca de</a>
       </div>
     </nav>
+    <nav class="navbar">
+      <a href={`${import.meta.env.BASE_URL}`} class="nav-brand">🐧 DistroIndex</a>
+      <div class="nav-links">
+        <a href={`${import.meta.env.BASE_URL}`}>Inicio</a>
+        <a href={`${import.meta.env.BASE_URL}blog`}>Blog</a>
+        <a href={`${import.meta.env.BASE_URL}historia`}>Historia</a>
+        <a href={`${import.meta.env.BASE_URL}acerca-de`}>Acerca de</a>
+        
+        <!-- Botón del Tema -->
+        <button id="theme-toggle" aria-label="Cambiar tema" style="background: none; border: none; cursor: pointer; font-size: 1.2rem; padding-left: 1rem; color: var(--text-main);">
+          🌓
+        </button>
+      </div>
+    </nav>
     <main>
       <!-- Aquí se inyectará el contenido de cada página individual -->
       <slot /> 
     </main>
+    <Footer />
+    <script>
+      const themeToggle = document.getElementById('theme-toggle');
+      
+      const handleToggleClick = () => {
+        const element = document.documentElement;
+        element.classList.toggle('light-theme');
+        
+        const isLight = element.classList.contains('light-theme');
+        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+      };
+    
+      themeToggle?.addEventListener('click', handleToggleClick);
+    </script>
   </body>
 </html>
