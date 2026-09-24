@@ -128,7 +128,7 @@ const families = [...new Set(distros.map((d: any) => d.family))].sort();
       {distros.map((distro: any) => (
         <div 
           class="card distro-card" 
-          data-search={`${distro.name} ${distro.family} ${distro.metadata?.package_manager || ''} ${(distro.metadata?.tags || []).join(' ')}`.toLowerCase()}
+          data-search={`${distro.name} ${distro.family} ${distro.package_manager || ''}`.toLowerCase()}
           data-family={distro.family}
         >
           <div class="card-header">
