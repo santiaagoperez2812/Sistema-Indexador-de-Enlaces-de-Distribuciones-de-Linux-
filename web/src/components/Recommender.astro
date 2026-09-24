@@ -1,0 +1,207 @@
+---
+// Recibimos las distribuciones como una propiedad desde index.astro
+const { distros } = Astro.props;
+---
+
+<div class="recommender-container">
+  <div class="recommender-header">
+    <h3>¿No sabes cuál elegir?</h3>
+    <p>Responde 3 preguntas y descubre tu distribución ideal.</p>
+  </div>
+
+  <div class="quiz-grid">
+    <div class="quiz-group">
+      <label for="quiz-exp">Nivel de Experiencia</label>
+      <select id="quiz-exp">
+        <option value="novato">Primera vez en Linux</option>
+        <option value="intermedio">Ya he usado la terminal</option>
+        <option value="avanzado">Quiero compilar y configurar todo</option>
+      </select>
+    </div>
+
+    <div class="quiz-group">
+      <label for="quiz-use">Uso Principal</label>
+      <select id="quiz-use">
+        <option value="diario">Uso diario / Navegación</option>
+        <option value="desarrollo">Programación / Desarrollo</option>
+        <option value="servidor">Servidor / Redes</option>
+      </select>
+    </div>
+
+    <div class="quiz-group">
+      <label for="quiz-hw">Hardware</label>
+      <select id="quiz-hw">
+        <option value="moderno">Computadora moderna (Buena RAM/CPU)</option>
+        <option value="antiguo">Computadora antigua / Pocos recursos</option>
+      </select>
+    </div>
+  </div>
+
+  <button id="btn-recommend" class="btn-recommend">Descubrir mi Distro</button>
+
+  <div id="quiz-results" class="quiz-results" style="display: none;">
+    <h4>Te recomendamos:</h4>
+    <div id="results-container" class="results-container"></div>
+  </div>
+</div>
+
+<style>
+  .recommender-container {
+    background: var(--card-bg);
+    border: 1px solid var(--accent);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 3.5rem;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.1);
+  }
+
+  .recommender-header { text-align: center; margin-bottom: 2rem; }
+  .recommender-header h3 { color: var(--text-main); font-size: 1.8rem; margin-bottom: 0.5rem; }
+  .recommender-header p { color: var(--text-muted); }
+
+  .quiz-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .quiz-group label {
+    display: block;
+    color: var(--text-main);
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    font-size: 0.95rem;
+  }
+
+  .quiz-group select {
+    width: 100%;
+    padding: 0.8rem;
+    border-radius: 8px;
+    border: 1px solid var(--card-border);
+    background: rgba(15, 23, 42, 0.6);
+    color: var(--text-main);
+    outline: none;
+    cursor: pointer;
+  }
+
+  .btn-recommend {
+    display: block;
+    width: 100%;
+    padding: 1rem;
+    background: rgba(56, 189, 248, 0.2);
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .btn-recommend:hover {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  .quiz-results {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--card-border);
+  }
+  
+  .quiz-results h4 { margin-bottom: 1rem; color: var(--text-main); }
+  
+  .results-container {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .result-item {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--card-border);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+    min-width: 200px;
+  }
+</style>
+
+<script define:vars={{ distros }}>
+  const btn = document.getElementById('btn-recommend');
+  const resultsDiv = document.getElementById('quiz-results');
+  const container = document.getElementById('results-container');
+
+  btn.addEventListener('click', () => {
+    const exp = document.getElementById('quiz-exp').value;
+    const use = document.getElementById('quiz-use').value;
+    const hw = document.getElementById('quiz-hw').value;
+
+    // Sistema de puntuación
+    let scores = {};
+    distros.forEach(d => scores[d.id] = 0);
+
+    // Lógica de Experiencia
+    if (exp === 'novato') {
+      if(scores['ubuntu'] !== undefined) scores['ubuntu'] += 3;
+      if(scores['linuxmint'] !== undefined) scores['linuxmint'] += 3;
+      if(scores['zorinos'] !== undefined) scores['zorinos'] += 3;
+    } else if (exp === 'intermedio') {
+      if(scores['fedora'] !== undefined) scores['fedora'] += 3;
+      if(scores['debian'] !== undefined) scores['debian'] += 3;
+      if(scores['opensuse'] !== undefined) scores['opensuse'] += 3;
+    } else if (exp === 'avanzado') {
+      if(scores['arch'] !== undefined) scores['arch'] += 4;
+      if(scores['gentoo'] !== undefined) scores['gentoo'] += 4;
+      if(scores['nixos'] !== undefined) scores['nixos'] += 4;
+    }
+
+    // Lógica de Uso
+    if (use === 'servidor') {
+      if(scores['debian'] !== undefined) scores['debian'] += 3;
+      if(scores['ubuntu'] !== undefined) scores['ubuntu'] += 2;
+      if(scores['alpine'] !== undefined) scores['alpine'] += 3;
+    } else if (use === 'desarrollo') {
+      if(scores['fedora'] !== undefined) scores['fedora'] += 2;
+      if(scores['arch'] !== undefined) scores['arch'] += 2;
+    }
+
+    // Lógica de Hardware
+    if (hw === 'antiguo') {
+      if(scores['alpine'] !== undefined) scores['alpine'] += 4;
+      if(scores['void'] !== undefined) scores['void'] += 4;
+      if(scores['debian'] !== undefined) scores['debian'] += 2;
+      // Penalizar las pesadas
+      if(scores['ubuntu'] !== undefined) scores['ubuntu'] -= 3;
+      if(scores['zorinos'] !== undefined) scores['zorinos'] -= 2;
+    }
+
+    // Ordenar y tomar los 3 mejores
+    const sorted = Object.keys(scores).sort((a, b) => scores[b] - scores[a]);
+    const top3Ids = sorted.slice(0, 3);
+    
+    const top3Distros = distros.filter(d => top3Ids.includes(d.id));
+
+    // Renderizar
+    container.innerHTML = '';
+    top3Distros.forEach(d => {
+      const logoUrl = d.logo ? (d.logo.startsWith('http') ? d.logo : d.logo.replace(/^\//, '')) : '';
+      
+      container.innerHTML += `
+        <div class="result-item">
+          ${logoUrl ? `<img src="${logoUrl}" width="40" height="40" alt="${d.name}" style="background:#fff; border-radius:8px; padding:4px;">` : '🐧'}
+          <div>
+            <strong style="display:block; color:var(--text-main);">${d.name}</strong>
+            <a href="distro/${d.id}" style="color:var(--accent); text-decoration:none; font-size:0.85rem;">Ver detalles &rarr;</a>
+          </div>
+        </div>
+      `;
+    });
+
+    resultsDiv.style.display = 'block';
+  });
+</script>

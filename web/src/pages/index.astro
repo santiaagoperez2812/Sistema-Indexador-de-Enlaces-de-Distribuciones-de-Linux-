@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Recommender from '../components/Recommender.astro';
 
 // Hacemos la petición HTTP a tu API en PythonAnywhere
 const response = await fetch('https://santiagoperez.pythonanywhere.com/api/distros');
@@ -93,6 +94,9 @@ const families = [...new Set(distros.map((d: any) => d.family))].sort();
       <h1>Linux Distro Index</h1>
       <p>Directorio centralizado y auditado de enlaces oficiales del ecosistema Linux.</p>
     </header>
+
+    <!-- Componente Recomendador Inyectado -->
+    <Recommender distros={distros} />
 
     <div class="search-container">
       <input 
