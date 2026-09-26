@@ -10,7 +10,6 @@ const { title = "Linux Distro Index" } = Astro.props;
     <title>{title}</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style is:global>
-      /* Variables Globales (Modo Oscuro por defecto) */
       :root {
         --bg-color: #0b0f19;
         --card-bg: rgba(30, 41, 59, 0.4);
@@ -21,7 +20,6 @@ const { title = "Linux Distro Index" } = Astro.props;
         --nav-bg: rgba(15, 23, 42, 0.8);
       }
       
-      /* Variables Globales (Modo Claro) */
       :root.light-theme {
         --bg-color: #f8fafc;
         --card-bg: rgba(255, 255, 255, 0.8);
@@ -42,12 +40,10 @@ const { title = "Linux Distro Index" } = Astro.props;
         transition: background-color 0.3s ease, color 0.3s ease;
       }
 
-      /* Ajuste del fondo degradado para el modo claro */
       :root.light-theme body {
         background-image: radial-gradient(circle at 50% 0%, #e2e8f0 0%, transparent 70%);
       }
 
-      /* Aseguramos que el Navbar tome la variable correcta */
       .navbar {
         background: var(--nav-bg);
         backdrop-filter: blur(12px);
@@ -63,34 +59,30 @@ const { title = "Linux Distro Index" } = Astro.props;
 
       .nav-brand { font-weight: 700; font-size: 1.2rem; color: var(--text-main); text-decoration: none; }
       
-      .nav-links { display: flex; gap: 1.5rem; }
-      .nav-links a {
-        color: var(--text-muted);
-        text-decoration: none;
-        font-weight: 500;
-        transition: color 0.2s;
-      }
+      .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+      .nav-links a { color: var(--text-muted); text-decoration: none; font-weight: 500; transition: color 0.2s; }
       .nav-links a:hover { color: var(--accent); }
       
+      /* Estilos para el área de usuario */
+      .auth-section { display: flex; align-items: center; gap: 1rem; border-left: 1px solid var(--card-border); padding-left: 1.5rem; }
+      .btn-login { background: #24292e; color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px; font-weight: 500; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; gap: 0.5rem; }
+      .btn-login:hover { background: #2f363d; }
+      .user-profile { display: flex; align-items: center; gap: 0.8rem; }
+      .user-avatar { width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--accent); }
+      .btn-logout { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 0.85rem; }
+      .btn-logout:hover { color: #ef4444; }
+
       main { padding: 3rem 1.5rem; max-width: 1200px; margin: 0 auto; }
     </style>
-    <!-- Script inline para prevenir el parpadeo de temas -->
     <script is:inline>
       const theme = (() => {
         if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
           return localStorage.getItem('theme');
         }
-        if (window.matchMedia('(prefers-color-scheme: light)').matches) {
-          return 'light';
-        }
+        if (window.matchMedia('(prefers-color-scheme: light)').matches) { return 'light'; }
         return 'dark';
       })();
-    
-      if (theme === 'light') {
-        document.documentElement.classList.add('light-theme');
-      } else {
-        document.documentElement.classList.remove('light-theme');
-      }
+      if (theme === 'light') { document.documentElement.classList.add('light-theme'); }
       window.localStorage.setItem('theme', theme);
     </script>
   </head>
@@ -101,31 +93,110 @@ const { title = "Linux Distro Index" } = Astro.props;
         <a href={`${import.meta.env.BASE_URL}`}>Inicio</a>
         <a href={`${import.meta.env.BASE_URL}blog`}>Blog</a>
         <a href={`${import.meta.env.BASE_URL}historia`}>Historia</a>
-        <a href={`${import.meta.env.BASE_URL}acerca-de`}>Acerca de</a>
         
-        <!-- Botón del Tema -->
-        <button id="theme-toggle" aria-label="Cambiar tema" style="background: none; border: none; cursor: pointer; font-size: 1.2rem; padding-left: 1rem; color: var(--text-main);">
-          🌓
-        </button>
+        <button id="theme-toggle" aria-label="Cambiar tema" style="background: none; border: none; cursor: pointer; font-size: 1.2rem; color: var(--text-main);">🌓</button>
+        
+        <!-- Sección de Autenticación Dinámica -->
+        <div class="auth-section" id="auth-container">
+          <button id="btn-login-github" class="btn-login">
+            <svg height="20" width="20" viewBox="0 0 16 16" fill="white"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
+            Entrar
+          </button>
+        </div>
+
       </div>
     </nav>
     <main>
-      <!-- Aquí se inyectará el contenido de cada página individual -->
       <slot /> 
     </main>
     <Footer />
-    <script>
-      const themeToggle = document.getElementById('theme-toggle');
-      
-      const handleToggleClick = () => {
-        const element = document.documentElement;
-        element.classList.toggle('light-theme');
-        
-        const isLight = element.classList.contains('light-theme');
-        localStorage.setItem('theme', isLight ? 'light' : 'dark');
-      };
     
-      themeToggle?.addEventListener('click', handleToggleClick);
+    <script>
+      // 1. Configuración de GitHub OAuth
+      const CLIENT_ID = 'Ov23liZ43TrhGloiYZvl'; // Reemplaza esto con el ID que guardaste ayer
+      const REDIRECT_URI = window.location.origin + import.meta.env.BASE_URL; 
+      const BACKEND_URL = 'https://santiagoperez.pythonanywhere.com/api/auth/github';
+
+      // Selectores de UI
+      const themeToggle = document.getElementById('theme-toggle');
+      const authContainer = document.getElementById('auth-container');
+      const loginBtn = document.getElementById('btn-login-github');
+      
+      // Manejo del Tema Claro/Oscuro
+      themeToggle?.addEventListener('click', () => {
+        document.documentElement.classList.toggle('light-theme');
+        localStorage.setItem('theme', document.documentElement.classList.contains('light-theme') ? 'light' : 'dark');
+      });
+
+      // 2. Lógica de renderizado del usuario
+      function renderUser() {
+        if (!authContainer) return;
+        const storedUser = localStorage.getItem('user_data');
+        
+        if (storedUser) {
+          const user = JSON.parse(storedUser);
+          authContainer.innerHTML = `
+            <div class="user-profile">
+              <img src="${user.avatar_url}" alt="Avatar" class="user-avatar" />
+              <span style="font-weight: 600; font-size: 0.9rem; color: var(--text-main);">${user.username}</span>
+              <button id="btn-logout" class="btn-logout">Salir</button>
+            </div>
+          `;
+          document.getElementById('btn-logout')?.addEventListener('click', () => {
+            localStorage.removeItem('auth_token');
+            localStorage.removeItem('user_data');
+            window.location.reload();
+          });
+        }
+      }
+
+      // 3. Flujo de Login
+      if (loginBtn) {
+        loginBtn.addEventListener('click', () => {
+          const authUrl = `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&scope=read:user`;
+          window.location.href = authUrl;
+        });
+      }
+
+      // 4. Interceptar el código de GitHub cuando redirige de vuelta
+      async function handleOAuthCallback() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+
+        if (code) {
+          if (authContainer) authContainer.innerHTML = '<span style="color:var(--text-muted); font-size:0.9rem;">Autenticando...</span>';
+          
+          try {
+            const response = await fetch(BACKEND_URL, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ code: code })
+            });
+            
+            const data = await response.json();
+            
+            if (response.ok) {
+              localStorage.setItem('auth_token', data.token);
+              localStorage.setItem('user_data', JSON.stringify(data.user));
+              
+              // Limpiar la URL para que no quede el código feo arriba
+              window.history.replaceState({}, document.title, window.location.pathname);
+              renderUser();
+            } else {
+              console.error("Error de autenticación:", data.error);
+              alert("Error al iniciar sesión con GitHub.");
+              window.location.reload();
+            }
+          } catch (error) {
+            console.error("Error de red:", error);
+          }
+        } else {
+          renderUser(); // Si no hay código en la URL, solo revisa si ya estábamos logueados
+        }
+      }
+
+      // Ejecutar la revisión al cargar la página
+      handleOAuthCallback();
     </script>
   </body>
 </html>
