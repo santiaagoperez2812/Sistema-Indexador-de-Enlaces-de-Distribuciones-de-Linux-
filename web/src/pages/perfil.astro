@@ -37,15 +37,27 @@ import Layout from '../layouts/Layout.astro';
     async function cargarFavoritos() {
       const estado = document.getElementById('estado');
       const contenedor = document.getElementById('contenedor-favoritos');
+      
+      // 1. Extraemos el token del localStorage
+      const token = localStorage.getItem('auth_token');
+
+      // Si no hay token, no perdemos tiempo haciendo la petición
+      if (!token) {
+        estado.innerHTML = 'Debes iniciar sesión con GitHub en la barra superior para ver tus favoritos.';
+        return;
+      }
 
       try {
+        // 2. Enviamos la petición con el token en los Headers
         const respuesta = await fetch('https://santiagoperez.pythonanywhere.com/api/favorites', {
           method: 'GET',
-          credentials: 'include' // Obligatorio para enviar la sesión de GitHub
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
         });
 
         if (respuesta.status === 401) {
-          estado.innerHTML = 'Debes <a href="https://santiagoperez.pythonanywhere.com/login" style="color: #38bdf8;">iniciar sesión con GitHub</a> para ver tus favoritos.';
+          estado.innerHTML = 'Tu sesión ha expirado. Por favor, vuelve a iniciar sesión con GitHub.';
           return;
         }
 

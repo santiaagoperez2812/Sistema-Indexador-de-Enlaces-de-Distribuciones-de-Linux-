@@ -238,19 +238,25 @@ try {
     favBtns.forEach(button => {
       button.addEventListener('click', async (e) => {
         const distroId = e.currentTarget.getAttribute('data-id');
+        const token = localStorage.getItem('auth_token'); // Extraemos el JWT guardado
+
+        if (!token) {
+          alert("Por favor, inicia sesión con tu cuenta de GitHub para guardar tus distros.");
+          return;
+        }
 
         try {
           const response = await fetch('https://santiagoperez.pythonanywhere.com/api/favorites', {
             method: 'POST',
             headers: {
-              'Content-Type': 'application/json'
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}` // Enviamos el token en la cabecera
             },
-            credentials: 'include', // Crucial para que Flask sepa qué usuario hizo clic
             body: JSON.stringify({ distro_id: distroId })
           });
 
           if (response.status === 401) {
-            alert("Por favor, inicia sesión con tu cuenta de GitHub para guardar tus distros.");
+            alert("Tu sesión ha expirado o no es válida. Por favor, inicia sesión nuevamente.");
             return;
           }
 
