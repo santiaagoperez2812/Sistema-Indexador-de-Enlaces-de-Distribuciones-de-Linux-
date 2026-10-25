@@ -113,7 +113,7 @@ const { title = "Linux Distro Index" } = Astro.props;
     
     <script>
       // 1. Configuración de GitHub OAuth
-      const CLIENT_ID = 'Ov23liZ43TrhGloiYZvl'; // Reemplaza esto con el ID que guardaste ayer
+      const CLIENT_ID = 'Ov23liZ43TrhGloiYZvl'; 
       const REDIRECT_URI = window.location.origin + import.meta.env.BASE_URL; 
       const BACKEND_URL = 'https://santiagoperez.pythonanywhere.com/api/auth/github';
 
@@ -137,6 +137,9 @@ const { title = "Linux Distro Index" } = Astro.props;
           const user = JSON.parse(storedUser);
           authContainer.innerHTML = `
             <div class="user-profile">
+              <a href="${import.meta.env.BASE_URL}perfil" style="color: var(--accent); font-weight: 600; text-decoration: none; margin-right: 0.5rem; font-size: 0.9rem; transition: color 0.2s;">
+                ⭐ Mis Favoritos
+              </a>
               <img src="${user.avatar_url}" alt="Avatar" class="user-avatar" />
               <span style="font-weight: 600; font-size: 0.9rem; color: var(--text-main);">${user.username}</span>
               <button id="btn-logout" class="btn-logout">Salir</button>
